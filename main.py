@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from services.gemini_service import detect_pollution
 
@@ -6,6 +7,15 @@ from services.gemini_service import detect_pollution
 app = FastAPI(
     title="Pollution Detection API",
     version="1.0.0"
+)
+
+# Allow all CORS requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -21,6 +31,7 @@ def home():
     return {
         "message": "Pollution Detection API is running"
     }
+
 
 @app.head("/headhealth")
 def headhealth():
@@ -65,8 +76,7 @@ async def pollution_detection(
         }
 
     except Exception as e:
-
         raise HTTPException(
             status_code=500,
-            detail=f"Pollution detection failed: {str(e)}"
+            detail=str(e)
         )
