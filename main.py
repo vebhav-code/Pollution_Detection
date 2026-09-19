@@ -22,6 +22,12 @@ def home():
         "message": "Pollution Detection API is running"
     }
 
+@app.head("/headhealth")
+def headhealth():
+    return {
+        "message": "ok"
+    }
+
 
 @app.post("/detect-pollution")
 async def pollution_detection(
